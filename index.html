@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laundry Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-tshirt"></i>
+                <h1>Laundry Management System</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </button>
+                <button class="nav-btn" data-page="customers">
+                    <i class="fas fa-users"></i>
+                    Customers
+                </button>
+                <button class="nav-btn" data-page="orders">
+                    <i class="fas fa-list-alt"></i>
+                    Orders
+                </button>
+                <button class="nav-btn" data-page="inventory">
+                    <i class="fas fa-boxes"></i>
+                    Inventory
+                </button>
+                <button class="nav-btn" data-page="billing">
+                    <i class="fas fa-receipt"></i>
+                    Billing
+                </button>
+                <button class="nav-btn" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    Reports
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <h2>Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-list-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-orders">0</h3>
+                                <p>Total Orders Today</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="daily-revenue">$0</h3>
+                                <p>Revenue Today</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="pending-orders">0</h3>
+                                <p>Pending Orders</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="low-stock">0</h3>
+                                <p>Low Stock Items</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content">
+                    <div class="dashboard-section">
+                        <h3>Recent Orders</h3>
+                        <div id="recent-orders" class="table-container">
+                            <!-- Recent orders will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="dashboard-section">
+                        <h3>Low Stock Alerts</h3>
+                        <div id="low-stock-alerts" class="table-container">
+                            <!-- Low stock alerts will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customers Page -->
+            <div id="customers" class="page">
+                <div class="page-header">
+                    <h2>Customer Management</h2>
+                    <button class="btn btn-primary" onclick="showCustomerModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Customer
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="customers-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Customer data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders Page -->
+            <div id="orders" class="page">
+                <div class="page-header">
+                    <h2>Order Management</h2>
+                    <button class="btn btn-primary" onclick="showOrderModal()">
+                        <i class="fas fa-plus"></i>
+                        New Order
+                    </button>
+                </div>
+                <div class="filters">
+                    <select id="order-status-filter">
+                        <option value="">All Status</option>
+                        <option value="received">Received</option>
+                        <option value="washing">Washing</option>
+                        <option value="ready">Ready</option>
+                        <option value="claimed">Claimed</option>
+                    </select>
+                </div>
+                <div class="table-container">
+                    <table id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Service Type</th>
+                                <th>Weight (kg)</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Order data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Inventory Page -->
+            <div id="inventory" class="page">
+                <div class="page-header">
+                    <h2>Inventory Management</h2>
+                    <button class="btn btn-primary" onclick="showInventoryModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Item
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Threshold</th>
+                                <th>Unit</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Inventory data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Billing Page -->
+            <div id="billing" class="page">
+                <div class="page-header">
+                    <h2>Billing & Payments</h2>
+                    <div class="billing-summary">
+                        <div class="summary-item">
+                            <span>Today's Revenue:</span>
+                            <strong id="today-revenue">$0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Completed Orders:</span>
+                            <strong id="completed-orders">0</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="billing-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Billing data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="reports" class="page">
+                <div class="page-header">
+                    <h2>Reports & Analytics</h2>
+                    <div class="report-filters">
+                        <select id="report-period">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="generateReport()">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Sales Summary</h3>
+                        <div id="sales-summary" class="report-content">
+                            <!-- Sales summary will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Service Types</h3>
+                        <div id="service-types-report" class="report-content">
+                            <!-- Service types report will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Top Customers</h3>
+                        <div id="top-customers-report" class="report-content">
+                            <!-- Top customers report will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Order Status</h3>
+                        <div id="order-status-report" class="report-content">
+                            <!-- Order status report will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="customerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="customerModalTitle">Add Customer</h3>
+                <span class="close" onclick="closeModal('customerModal')">&times;</span>
+            </div>
+            <form id="customerForm">
+                <input type="hidden" id="customerId">
+                <div class="form-group">
+                    <label for="customerName">Name *</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerContact">Contact *</label>
+                    <input type="text" id="customerContact" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email</label>
+                    <input type="email" id="customerEmail">
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Address</label>
+                    <textarea id="customerAddress"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('customerModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="orderModalTitle">New Order</h3>
+                <span class="close" onclick="closeModal('orderModal')">&times;</span>
+            </div>
+            <form id="orderForm">
+                <input type="hidden" id="orderId">
+                <div class="form-group">
+                    <label for="orderCustomer">Customer *</label>
+                    <select id="orderCustomer" required>
+                        <option value="">Select Customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="orderWeight">Weight (kg) *</label>
+                    <input type="number" id="orderWeight" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="orderServiceType">Service Type *</label>
+                    <select id="orderServiceType" required>
+                        <option value="">Select Service</option>
+                        <option value="wash">Wash Only</option>
+                        <option value="dry">Dry Only</option>
+                        <option value="fold">Fold Only</option>
+                        <option value="wash_dry">Wash + Dry</option>
+                        <option value="wash_dry_fold">Wash + Dry + Fold</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="orderPrice">Price</label>
+                    <input type="number" id="orderPrice" step="0.01" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="orderNotes">Notes</label>
+                    <textarea id="orderNotes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('orderModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="inventoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="inventoryModalTitle">Add Inventory Item</h3>
+                <span class="close" onclick="closeModal('inventoryModal')">&times;</span>
+            </div>
+            <form id="inventoryForm">
+                <input type="hidden" id="inventoryId">
+                <div class="form-group">
+                    <label for="inventoryName">Item Name *</label>
+                    <input type="text" id="inventoryName" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryQuantity">Quantity *</label>
+                    <input type="number" id="inventoryQuantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryThreshold">Low Stock Threshold *</label>
+                    <input type="number" id="inventoryThreshold" required>
+                </div>
+                <div class="form-group">
+                    <label for="inventoryUnit">Unit</label>
+                    <input type="text" id="inventoryUnit" value="units">
+                </div>
+                <div class="form-group">
+                    <label for="inventoryCost">Cost per Unit</label>
+                    <input type="number" id="inventoryCost" step="0.01">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('inventoryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
