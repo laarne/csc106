@@ -728,3 +728,9 @@ tr:hover {
         padding: 0.5rem;
     }
 }
+
+@media (max-width: 768px) {
+    .stats-grid {
+        flex-direction: column;  /* Stack vertically on smaller screens */
+    }
+}
